@@ -1,0 +1,67 @@
+export const featuredNews = [
+  {
+    id: '1',
+    symbol: 'AAPL',
+    company: 'Apple',
+    companyCode: 'CNN',
+    time: '3h atrás',
+    title: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
+    image: require('../images/Newspaper/background.png'),
+    status: 'Positivo',
+  },
+  {
+    id: '2',
+    symbol: 'TSLA',
+    company: 'Tesla',
+    companyCode: 'BBC',
+    time: '5h atrás',
+    title: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
+    image: require('../images/Newspaper/background.png'),
+    status: 'Neutro',
+  },
+  {
+    id: '3',
+    symbol: 'GOOGL',
+    company: 'Google',
+    companyCode: 'WSJ',
+    time: '7h atrás',
+    title: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
+    image: require('../images/Newspaper/background.png'),
+    status: 'Negativo',
+  },
+];
+
+export const newsList = [
+  {
+    id: '4',
+    title: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
+    company: 'Apple',
+    symbol: 'AAPL',
+    companyCode: 'CNN',
+    time: '3h atrás',
+  },
+  {
+    id: '5',
+    title: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
+    company: 'Apple',
+    symbol: 'AAPL',
+    companyCode: 'CNN',
+    time: '3h atrás',
+  },
+  {
+    id: '6',
+    title: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
+    company: 'Apple',
+    symbol: 'AAPL',
+    companyCode: 'CNN',
+    time: '3h atrás',
+  },
+  {
+    id: '7',
+    title: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
+    company: 'Apple',
+    symbol: 'AAPL',
+    companyCode: 'CNN',
+    time: '3h atrás',
+  },
+];
