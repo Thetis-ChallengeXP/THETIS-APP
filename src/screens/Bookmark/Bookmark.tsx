@@ -55,9 +55,9 @@ const Bookmark: React.FC<Props> = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 20 }}
         >
-          <SectionHeader title="Geral" onSeeMorePress={() => console.log('Ver mais geral')} />
+          <SectionHeader title="Geral" onSeeMorePress={() => 'Ver mais geral'} />
 
-          <SectionHeader title="Todos" onSeeMorePress={() => console.log('Ver mais todos')} />
+          <SectionHeader title="Todos" onSeeMorePress={() => 'Ver mais todos'} />
           <Styled.BookmarkListContainer>
             {bookmarkItems.map((item) => (
               <BookmarkItem key={item.id} item={item} />

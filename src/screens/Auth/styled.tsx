@@ -1,7 +1,7 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styled from 'styled-components/native';
 
-const Container = styled.View`
+const Container = styled.SafeAreaView`
   flex: 1;
   background-color: #1e88e5;
 `;
@@ -27,7 +27,7 @@ const WavyBottom = styled.View`
   height: 40px;
 `;
 
-const ContentSection = styled.View`
+const ContentSection = styled.ScrollView`
   flex: 1;
   padding: 20px;
   margin-top: 20px;
@@ -59,7 +59,7 @@ const TabText = styled.Text<{ active?: boolean }>`
 `;
 
 const InputContainer = styled.View`
-  margin-bottom: 20px;
+  margin-bottom: 30px; 
 `;
 
 const InputWrapper = styled.View`
@@ -95,12 +95,21 @@ const LoginButton = styled.TouchableOpacity`
   padding: 15px;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px; 
+  min-height: 50px; 
 `;
 
 const LoginButtonText = styled.Text`
   color: white;
   font-weight: bold;
   font-size: 16px;
+`;
+
+const ErrorText = styled.Text`
+  color: red;
+  font-size: 12px;
+  margin-bottom: 8px;
+  margin-left: 8px;
 `;
 
 export const AuthStyled = {
@@ -119,4 +128,5 @@ export const AuthStyled = {
   ForgotPasswordContainer,
   LoginButton,
   LoginButtonText,
+  ErrorText,
 };
