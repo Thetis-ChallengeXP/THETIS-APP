@@ -50,11 +50,6 @@ const MessageBubble = styled.View<MessageProps>`
   padding: 12px 16px;
   border-radius: 20px;
   background-color: ${(props) => (props.isUser ? '#1E88E5' : '#fff')};
-  shadow-color: #000;
-  shadow-offset: 0px 1px;
-  shadow-opacity: 0.1;
-  shadow-radius: 2px;
-  elevation: 2;
 `;
 
 const MessageHeader = styled.View`

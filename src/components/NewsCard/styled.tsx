@@ -1,25 +1,29 @@
 import styled from 'styled-components/native';
 
-const Container = styled.View`
+export const Container = styled.View`
   width: 280px;
-  height: 180px;
+  height: 200px;
   border-radius: 12px;
   margin-right: 12px;
   overflow: hidden;
   background-color: #fff;
-  shadow-color: #000;
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.1;
-  shadow-radius: 4px;
-  elevation: 3;
 `;
 
 const ImageBackground = styled.ImageBackground`
   width: 100%;
   height: 120px;
+  position: relative;
+`;
+
+const OverlayContainer = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex-direction: row;
   justify-content: space-between;
   padding: 12px;
-  flex-direction: row;
 `;
 
 const LogoContainer = styled.View`
@@ -42,6 +46,7 @@ const StatusBadge = styled.View<{ status: string }>`
   padding: 4px 8px;
   border-radius: 8px;
   align-self: flex-start;
+  height: fit-content;
 `;
 
 const StatusText = styled.Text`
@@ -92,6 +97,7 @@ const Title = styled.Text`
 export const StyledNewsCard = {
   Container,
   ImageBackground,
+  OverlayContainer,
   LogoContainer,
   LogoText,
   StatusBadge,

@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 interface TrendProps {
-  trend?: 'up' | 'down';
+  trend?: 'up' | 'down' | 'neutral';
 }
 
 interface SelectedProps {
@@ -85,7 +85,18 @@ const StockPrice = styled.Text`
 const ChangeText = styled.Text<TrendProps>`
   font-size: 14px;
   font-weight: 500;
-  color: ${({ trend }) => (trend === 'up' ? '#4CAF50' : '#F44336')};
+  color: ${({ trend }) => {
+    switch (trend) {
+      case 'up':
+        return '#4CAF50';
+      case 'down':
+        return '#F44336';
+      case 'neutral':
+        return '#666';
+      default:
+        return '#666';
+    }
+  }};
 `;
 
 const ChartContainer = styled.View`

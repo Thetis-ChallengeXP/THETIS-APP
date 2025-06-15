@@ -186,7 +186,10 @@ const PasswordReset: React.FC<Props> = ({ navigation }) => {
   return (
     <Styled.Container>
       <Styled.TopSection>
-        <Styled.Logo source={require('../../images/thetis_logo.png')} />
+        <Styled.Logo
+          source={require('../../images/thetis_logo.png')}
+          style={{ tintColor: 'white' }}
+        />
         <Styled.WavyBottom />
       </Styled.TopSection>
 

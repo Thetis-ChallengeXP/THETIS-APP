@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 const Container = styled.SafeAreaView`
   flex: 1;
   background-color: #fff;
-  height: 100%;
+  height: auto;
 `;
 
 const Content = styled.View`
@@ -47,11 +47,6 @@ const ChatBotButton = styled.View`
   background-color: #e3f2fd;
   justify-content: center;
   align-items: center;
-  shadow-color: #000;
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.1;
-  shadow-radius: 4px;
-  elevation: 3;
 `;
 
 const SectionHeaderContainer = styled.View`

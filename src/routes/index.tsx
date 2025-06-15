@@ -9,8 +9,9 @@ import Signup from '../screens/Auth/Signup';
 import PasswordReset from '../screens/Auth/PasswordReset';
 import Screens from '../screens/index';
 import StockDetail from '../components/StockDetail/StockDetail';
-import { AuthProvider } from '../contexts/AuthContext';
+import { AuthProvider } from '../contexts/AuthContextStorage';
 import ChatBot from '../screens/ChatBot/ChatBot';
+import Bookmark from '../screens/Bookmark/Bookmark';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -19,6 +20,7 @@ export type RootStackParamList = {
   PasswordReset: undefined;
   ChatBot: undefined;
   Home: undefined;
+  BookMark: undefined;
   StockDetail: {
     stock: {
       id: string;
@@ -27,7 +29,7 @@ export type RootStackParamList = {
       price: string;
       change?: string;
       status?: string;
-      trend: 'up' | 'down';
+      trend: 'up' | 'down' | 'neutral';
     };
   };
 };
@@ -55,6 +57,7 @@ const Routes: React.FC = () => {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="ChatBot" component={ChatBot} options={{ headerShown: false }} />
+          <Stack.Screen name="BookMark" component={Bookmark} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

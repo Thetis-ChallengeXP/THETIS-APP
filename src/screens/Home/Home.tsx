@@ -46,7 +46,15 @@ const Home: React.FC<Props> = ({ navigation }) => {
               onPress={() => navigation.navigate('ChatBot')}
               style={{ marginRight: 12 }}
             >
-              <Styled.ChatBotButton>
+              <Styled.ChatBotButton
+                style={{
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 4,
+                  elevation: 3,
+                }}
+              >
                 <ChatBubbleLeftIcon color="#1E88E5" size={20} />
               </Styled.ChatBotButton>
             </TouchableOpacity>

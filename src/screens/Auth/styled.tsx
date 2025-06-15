@@ -17,7 +17,6 @@ const TopSection = styled.View`
 const Logo = styled.Image`
   width: 80px;
   height: 80px;
-  tint-color: white;
 `;
 
 const WavyBottom = styled.View`
@@ -50,7 +49,7 @@ const TabButton = styled.TouchableOpacity<{ active?: boolean }>`
   align-items: center;
   background-color: ${(props) => (props.active ? '#fff' : 'transparent')};
   border-radius: 25px;
-  elevation: ${(props) => (props.active ? 2 : 0)};
+  /* elevation: ${(props) => (props.active ? 2 : 0)}; */
 `;
 
 const TabText = styled.Text<{ active?: boolean }>`

@@ -11,7 +11,7 @@ export interface Stock {
   price: string;
   change?: string;
   status?: string;
-  trend: 'up' | 'down';
+  trend: 'up' | 'down' | 'neutral';
 }
 
 export type RootStackParamList = {
@@ -35,6 +35,19 @@ const StockList: React.FC<StockListProps> = ({ stocks, showStatus = false }) => 
     navigation.navigate('StockDetail', { stock });
   };
 
+  const getTrendImage = (trend: 'up' | 'down' | 'neutral') => {
+    switch (trend) {
+      case 'up':
+        return require('../../images/Home/trend-up.png');
+      case 'down':
+        return require('../../images/Home/trend-down.png');
+      case 'neutral':
+        return require('../../images/Home/trend-neutral.png');
+      default:
+        return require('../../images/Home/trend-neutral.png');
+    }
+  };
+
   return (
     <>
       {stocks.map((stock) => (
@@ -51,18 +64,14 @@ const StockList: React.FC<StockListProps> = ({ stocks, showStatus = false }) => 
             </Styled.StockInfo>
 
             <Styled.StockTrend>
-              {stock.trend === 'up' ? (
-                <Styled.TrendLineGraph source={require('../../images/Home/trend-up.png')} />
-              ) : (
-                <Styled.TrendLineGraph source={require('../../images/Home/trend-down.png')} />
-              )}
+              <Styled.TrendLineGraph source={getTrendImage(stock.trend)} resizeMode="contain" />
             </Styled.StockTrend>
 
             <Styled.PriceContainer>
               <Styled.StockPrice>{stock.price}</Styled.StockPrice>
               {showStatus ? (
-                <Styled.StatusBadge>
-                  <Styled.StatusText>{stock.status}</Styled.StatusText>
+                <Styled.StatusBadge trend={stock.trend}>
+                  <Styled.StatusText trend={stock.trend}>{stock.status}</Styled.StatusText>
                 </Styled.StatusBadge>
               ) : (
                 <Styled.ChangeText trend={stock.trend}>{stock.change}</Styled.ChangeText>

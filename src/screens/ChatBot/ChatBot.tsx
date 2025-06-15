@@ -17,7 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChatBotStyled as Styled } from './styled';
 import { PaperAirplaneIcon } from 'react-native-heroicons/outline';
 import { UserIcon } from 'react-native-heroicons/solid';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContextStorage';
 import { chatbotService } from '../../services/apiService';
 
 type RootStackParamList = {
@@ -233,7 +233,16 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
 
           {messages.map((message) => (
             <Styled.MessageWrapper key={message.id} isUser={message.isUser}>
-              <Styled.MessageBubble isUser={message.isUser}>
+              <Styled.MessageBubble
+                isUser={message.isUser}
+                style={{
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 2,
+                  elevation: 2,
+                }}
+              >
                 <Styled.MessageHeader>
                   {message.isUser ? (
                     <UserIcon size={16} color="#fff" />
@@ -259,7 +268,16 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
 
           {isLoading && (
             <Styled.MessageWrapper isUser={false}>
-              <Styled.MessageBubble isUser={false}>
+              <Styled.MessageBubble
+                isUser={false}
+                style={{
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 2,
+                  elevation: 2,
+                }}
+              >
                 <Styled.LoadingContainer>
                   <ActivityIndicator size="small" color="#1E88E5" />
                   <Styled.LoadingText>Assistente digitando...</Styled.LoadingText>

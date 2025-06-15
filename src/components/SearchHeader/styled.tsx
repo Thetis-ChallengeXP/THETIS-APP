@@ -4,8 +4,8 @@ export const SectionHeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-horizontal: 16px;
-  margin-vertical: 16px;
+  padding: 0 16px;
+  margin: 16px 0;
 `;
 
 export const SectionTitle = styled.Text`

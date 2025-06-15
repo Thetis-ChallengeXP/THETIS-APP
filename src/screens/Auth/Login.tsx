@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStyled as Styled } from './styled';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContextStorage';
 
 type RootStackParamList = {
   Login: undefined;
@@ -48,9 +48,12 @@ const Login: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <Styled.Container>  
+    <Styled.Container>
       <Styled.TopSection>
-        <Styled.Logo source={require('../../images/thetis_logo.png')} />
+        <Styled.Logo
+          source={require('../../images/thetis_logo.png')}
+          style={{ tintColor: 'white' }}
+        />
         <Styled.WavyBottom />
       </Styled.TopSection>
 

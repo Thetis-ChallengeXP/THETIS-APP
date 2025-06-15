@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ArrowLeftIcon } from 'react-native-heroicons/outline';
+import { ArrowLeftIcon, BellIcon } from 'react-native-heroicons/outline';
+import { BookmarkIcon } from 'react-native-heroicons/outline';
+import { BookmarkIcon as BookmarkSolidIcon } from 'react-native-heroicons/solid';
 import { StockDetailStyled as Styled } from './styled';
+import { useSavedStocks } from '../../contexts/SavedStocksContext';
 
 export interface Stock {
   id: string;
@@ -12,7 +15,7 @@ export interface Stock {
   price: string;
   change?: string;
   status?: string;
-  trend: 'up' | 'down';
+  trend: 'up' | 'down' | 'neutral';
 }
 
 export type RootStackParamList = {
@@ -20,6 +23,7 @@ export type RootStackParamList = {
   Signup: undefined;
   Home: undefined;
   StockDetail: { stock: Stock };
+  BookMark: undefined;
 };
 
 type StockDetailRouteProp = RouteProp<RootStackParamList, 'StockDetail'>;
@@ -32,6 +36,39 @@ interface Props {
 
 const StockDetail: React.FC<Props> = ({ route, navigation }) => {
   const { stock } = route.params;
+  const { saveStock, unsaveStock, isStockSaved } = useSavedStocks();
+
+  const getTrendImage = (trend: 'up' | 'down' | 'neutral') => {
+    switch (trend) {
+      case 'up':
+        return require('../../images/Home/trend-up.png');
+      case 'down':
+        return require('../../images/Home/trend-down.png');
+      case 'neutral':
+        return require('../../images/Home/trend-neutral.png');
+      default:
+        return require('../../images/Home/trend-neutral.png');
+    }
+  };
+
+  const handleBookmarkPress = () => {
+    if (isStockSaved(stock.id)) {
+      unsaveStock(stock.id);
+      Alert.alert('Removido', 'Ação removida dos salvos');
+    } else {
+      saveStock(stock);
+      Alert.alert('Salvo!', 'Ação salva com sucesso!', [
+        {
+          text: 'OK',
+          style: 'default',
+        },
+        // {
+        //   text: 'Ver Salvos',
+        //   onPress: () => navigation.navigate('BookMark'),
+        // },
+      ]);
+    }
+  };
 
   return (
     <Styled.Container>
@@ -40,7 +77,25 @@ const StockDetail: React.FC<Props> = ({ route, navigation }) => {
           <ArrowLeftIcon color="#000" size={24} />
         </TouchableOpacity>
         <Styled.HeaderTitle>{stock.name}</Styled.HeaderTitle>
-        <View style={{ width: 24 }} />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+          <TouchableOpacity
+            style={{ padding: 4 }}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <BellIcon color="#000" size={24} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleBookmarkPress}
+            style={{ padding: 4 }}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            {isStockSaved(stock.id) ? (
+              <BookmarkSolidIcon color="#007AFF" size={24} />
+            ) : (
+              <BookmarkIcon color="#000" size={24} />
+            )}
+          </TouchableOpacity>
+        </View>
       </Styled.Header>
 
       <ScrollView
@@ -50,7 +105,10 @@ const StockDetail: React.FC<Props> = ({ route, navigation }) => {
         <Styled.StockInfoCard>
           <Styled.StockBasicInfo>
             <Styled.LogoContainer>
-              <Styled.LogoImage source={require('../../images/brands/apple_logo.png')} />
+              <Styled.LogoImage
+                source={require('../../images/brands/apple_logo.png')}
+                resizeMode="contain"
+              />
             </Styled.LogoContainer>
             <View>
               <Styled.StockSymbol>{stock.symbol}</Styled.StockSymbol>
@@ -67,7 +125,7 @@ const StockDetail: React.FC<Props> = ({ route, navigation }) => {
         </Styled.StockInfoCard>
 
         <Styled.ChartContainer>
-          <Styled.ChartImage source={require('../../images/Home/trend-up.png')} />
+          <Styled.ChartImage source={getTrendImage(stock.trend)} />
           <Styled.TimeframeSelector>
             <Styled.TimeframeOption selected={false}>
               <Styled.TimeframeText selected={false}>1sem</Styled.TimeframeText>
