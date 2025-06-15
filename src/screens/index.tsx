@@ -4,15 +4,15 @@ import Home from './Home/Home';
 import Profile from './Profile/Profile';
 import Details from './Newspaper/Newspaper';
 import Bookmark from './Bookmark/Bookmark';
+import ChatBot from './ChatBot/ChatBot';
 
 const Tab = createBottomTabNavigator();
 
 const screenOptions = {
   tabBarStyle: {
-    backgroundColor: '${({ theme }) => theme.colors.backgroundWhite};',
     borderTopWidth: 0,
     height: 70,
-    padding: 5,
+    padding: 10,
 
     // Sombra para iOS
     shadowColor: '#000',
@@ -28,6 +28,7 @@ const screenOptions = {
   },
   tabBarActiveTintColor: '#1E88E5',
   tabBarInactiveTintColor: '#b4b4b4',
+  tabBarHideOnKeyboard: true,
 };
 
 const tabs = [
@@ -45,6 +46,11 @@ const tabs = [
     name: 'Salvos',
     component: Bookmark,
     icon: 'bookmark-outline',
+  },
+  {
+    name: 'Assistente',
+    component: ChatBot,
+    icon: 'chatbubble-outline',
   },
   {
     name: 'Perfil',

@@ -51,7 +51,6 @@ const StockTrend = styled.View`
 const TrendLineGraph = styled.Image`
   width: 60px;
   height: 24px;
-  resize-mode: contain;
 `;
 
 const PriceContainer = styled.View`
@@ -64,23 +63,56 @@ const StockPrice = styled.Text`
   font-weight: bold;
 `;
 
-const StatusBadge = styled.View`
-  background-color: #d0f0d0;
+const StatusBadge = styled.View<{ trend?: 'up' | 'down' | 'neutral' }>`
+  background-color: ${({ trend }) => {
+    switch (trend) {
+      case 'up':
+        return '#d0f0d0'; // Verde claro para positivo
+      case 'down':
+        return '#ffcdd2'; // Vermelho claro para negativo
+      case 'neutral':
+        return '#fff3cd'; // Amarelo claro para neutro
+      default:
+        return '#f5f5f5'; // Cinza claro como fallback
+    }
+  }};
   padding: 4px 8px;
   border-radius: 8px;
   margin-top: 4px;
 `;
 
-const StatusText = styled.Text`
-  color: #2e7d32;
+const StatusText = styled.Text<{ trend?: 'up' | 'down' | 'neutral' }>`
+  color: ${({ trend }) => {
+    switch (trend) {
+      case 'up':
+        return '#2e7d32'; // Verde escuro para positivo
+      case 'down':
+        return '#c62828'; // Vermelho escuro para negativo
+      case 'neutral':
+        return '#f57c00'; // Amarelo escuro para neutro
+      default:
+        return '#424242'; // Cinza escuro como fallback
+    }
+  }};
   font-size: 12px;
   font-weight: 500;
 `;
 
-const ChangeText = styled.Text<{ trend: string }>`
+const ChangeText = styled.Text<{ trend: 'up' | 'down' | 'neutral' }>`
   font-size: 12px;
   margin-top: 4px;
-  color: ${({ trend }) => (trend === 'up' ? '#4caf50' : '#f44336')};
+  color: ${({ trend }) => {
+    switch (trend) {
+      case 'up':
+        return '#4caf50';
+      case 'down':
+        return '#f44336';
+      case 'neutral':
+        return '#ff9800';
+      default:
+        return '#757575'; 
+    }
+  }};
   font-weight: 500;
 `;
 

@@ -5,7 +5,9 @@ import { BookmarkStyled as Styled } from './styled';
 import { MagnifyingGlassIcon, BellIcon } from 'react-native-heroicons/outline';
 import { ArrowUpRightIcon } from 'react-native-heroicons/solid';
 import BookmarkItem from '../../components/BookmarkItem/BookmarkItem';
+import StockList from '../../components/StockList/StockList';
 import { bookmarkItems } from '../../utils/bookmarksData';
+import { useSavedStocks } from '../../contexts/SavedStocksContext';
 import TabBar from '../../components/TabBar/TabBar';
 
 type RootStackParamList = {
@@ -36,6 +38,8 @@ const SectionHeader = ({
 );
 
 const Bookmark: React.FC<Props> = ({ navigation }) => {
+  const { savedStocks } = useSavedStocks();
+
   return (
     <Styled.Container>
       <Styled.Content>
@@ -55,9 +59,28 @@ const Bookmark: React.FC<Props> = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 20 }}
         >
-          <SectionHeader title="Geral" onSeeMorePress={() => console.log('Ver mais geral')} />
+          <SectionHeader
+            title="Ativos salvos"
+            onSeeMorePress={() => console.log('Ver mais ativos salvos')}
+          />
 
-          <SectionHeader title="Todos" onSeeMorePress={() => console.log('Ver mais todos')} />
+          {savedStocks.length > 0 ? (
+            <View style={{ marginBottom: 20 }}>
+              <StockList stocks={savedStocks} showStatus={false} />
+            </View>
+          ) : (
+            <Styled.EmptyStateContainer>
+              <Styled.EmptyStateText>
+                Nenhum ativo salvo ainda.{'\n'}
+                Toque no ícone de bookmark para salvar ações!
+              </Styled.EmptyStateText>
+            </Styled.EmptyStateContainer>
+          )}
+
+          <SectionHeader
+            title="Notícias salvas"
+            onSeeMorePress={() => console.log('Ver mais notícias')}
+          />
           <Styled.BookmarkListContainer>
             {bookmarkItems.map((item) => (
               <BookmarkItem key={item.id} item={item} />

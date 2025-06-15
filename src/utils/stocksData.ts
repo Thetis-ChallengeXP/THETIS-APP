@@ -5,7 +5,7 @@ export interface Stock {
   price: string;
   change?: string;
   status?: string;
-  trend: 'up' | 'down';
+  trend: 'up' | 'down' | 'neutral';
 }
 
 export const portfolioStocks: Stock[] = [
@@ -49,15 +49,15 @@ export const trendingStocks: Stock[] = [
     symbol: 'AAPL',
     name: 'Apple',
     price: 'R$59.35',
-    status: 'Positivo',
-    trend: 'up',
+    status: 'Neutro',
+    trend: 'neutral',
   },
   {
     id: '6',
     symbol: 'AAPL',
     name: 'Apple',
     price: 'R$59.35',
-    status: 'Positivo',
+    status: 'Negativo',
     trend: 'down',
   },
 ];

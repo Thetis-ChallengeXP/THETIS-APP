@@ -58,6 +58,24 @@ const BookmarkListContainer = styled.View`
   padding: 0 16px;
 `;
 
+export const EmptyStateContainer = styled.View`
+  padding: 40px 20px;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  margin: 10px 0 20px 0;
+  border: 1px dashed #dee2e6;
+`;
+
+export const EmptyStateText = styled.Text`
+  font-size: 16px;
+  color: #6c757d;
+  text-align: center;
+  line-height: 24px;
+  font-family: 'Inter-Regular';
+`;
+
 export const BookmarkStyled = {
   Container,
   Content,
@@ -68,4 +86,6 @@ export const BookmarkStyled = {
   SectionTitle,
   SeeMoreText,
   BookmarkListContainer,
+  EmptyStateContainer,
+  EmptyStateText,
 };

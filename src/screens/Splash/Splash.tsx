@@ -60,6 +60,7 @@ const Splash: React.FC<Props> = ({ navigation }) => {
         style={{
           opacity: fadeAnim,
           transform: [{ scale: scaleAnim }],
+          tintColor: 'white',
         }}
         source={require('../../images/thetis_logo.png')}
         resizeMode="contain"
@@ -93,7 +94,6 @@ const Container = styled.View`
 const AnimatedLogo = styled(Animated.Image)`
   width: 120px;
   height: 120px;
-  tint-color: white;
 `;
 
 const AnimatedTitle = styled(Animated.Text)`

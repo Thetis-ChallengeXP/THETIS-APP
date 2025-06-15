@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native';
 
-const Container = styled.SafeAreaView`
+const Container = styled.ScrollView`
   display: flex;
   background-color: #fff;
   height: 100%;
@@ -41,7 +41,7 @@ const NameText = styled.Text`
 
 const InfoContainer = styled.View`
   width: 100%;
-  background-color: #F7F7F7;
+  background-color: #f7f7f7;
   border-radius: 10px;
   padding: 16px;
   margin-bottom: 20px;
@@ -59,31 +59,13 @@ const InfoItem = styled.View`
   align-items: center;
   padding: 12px 0;
   border-bottom-width: 1px;
-  border-bottom-color: #E0E0E0;
+  border-bottom-color: #e0e0e0;
 `;
 
 const InfoValue = styled.Text`
   font-size: 16px;
   color: #333;
   margin-left: 15px;
-`;
-
-const PortfolioContainer = styled.View`
-  width: 100%;
-  background-color: #F7F7F7;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 20px;
-`;
-
-const PortfolioSummary = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const PortfolioItem = styled.View`
-  align-items: center;
-  padding: 10px;
 `;
 
 const BottomButtons = styled.View`
@@ -96,7 +78,7 @@ const EditButton = styled(TouchableOpacity)`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #007AFF;
+  background-color: #007aff;
   padding: 15px;
   border-radius: 8px;
 `;
@@ -105,11 +87,11 @@ const LogoutButton = styled(TouchableOpacity)`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #FFF;
+  background-color: #fff;
   padding: 15px;
   border-radius: 8px;
   border-width: 1px;
-  border-color: #FF3B30;
+  border-color: #ff3b30;
 `;
 
 const Title = styled.Text`
@@ -140,9 +122,6 @@ export const ProfileStyled = {
   InfoLabel,
   InfoItem,
   InfoValue,
-  PortfolioContainer,
-  PortfolioSummary,
-  PortfolioItem,
   BottomButtons,
   EditButton,
   LogoutButton,

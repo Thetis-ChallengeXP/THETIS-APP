@@ -63,7 +63,7 @@ const Newspaper: React.FC<Props> = ({ navigation }) => {
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingLeft: 16, paddingRight: 8 }}
+              contentContainerStyle={{ paddingLeft: 16, paddingRight: 8, paddingBottom: 8 }}
             >
               {featuredNews.map((news) => (
                 <NewsCard key={news.id} news={news} />
