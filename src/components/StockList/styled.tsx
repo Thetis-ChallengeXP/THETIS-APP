@@ -67,13 +67,13 @@ const StatusBadge = styled.View<{ trend?: 'up' | 'down' | 'neutral' }>`
   background-color: ${({ trend }) => {
     switch (trend) {
       case 'up':
-        return '#d0f0d0'; // Verde claro para positivo
+        return '#d0f0d0';
       case 'down':
-        return '#ffcdd2'; // Vermelho claro para negativo
+        return '#ffcdd2';
       case 'neutral':
-        return '#fff3cd'; // Amarelo claro para neutro
+        return '#fff3cd';
       default:
-        return '#f5f5f5'; // Cinza claro como fallback
+        return '#f5f5f5';
     }
   }};
   padding: 4px 8px;
@@ -85,13 +85,13 @@ const StatusText = styled.Text<{ trend?: 'up' | 'down' | 'neutral' }>`
   color: ${({ trend }) => {
     switch (trend) {
       case 'up':
-        return '#2e7d32'; // Verde escuro para positivo
+        return '#2e7d32'
       case 'down':
-        return '#c62828'; // Vermelho escuro para negativo
+        return '#c62828';
       case 'neutral':
-        return '#f57c00'; // Amarelo escuro para neutro
+        return '#f57c00';
       default:
-        return '#424242'; // Cinza escuro como fallback
+        return '#424242';
     }
   }};
   font-size: 12px;

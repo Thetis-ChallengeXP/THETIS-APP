@@ -13,10 +13,13 @@ import { AuthProvider } from '../contexts/AuthContextStorage';
 import ChatBot from '../screens/ChatBot/ChatBot';
 import Bookmark from '../screens/Bookmark/Bookmark';
 
+import InvestorProfileController from '../screens/Auth/InvestorProfile/Steps/InvestorProfileController';
+
 export type RootStackParamList = {
   Splash: undefined;
   Login: undefined;
   Signup: undefined;
+  InvestorProfile: undefined;
   PasswordReset: undefined;
   ChatBot: undefined;
   Home: undefined;
@@ -45,6 +48,11 @@ const Routes: React.FC = () => {
           <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="InvestorProfile"
+            component={InvestorProfileController}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="PasswordReset"
             component={PasswordReset}

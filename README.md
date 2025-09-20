@@ -22,6 +22,24 @@ Thetis é um aplicativo mobile inteligente desenvolvido em React Native que util
 
 ## Funcionalidades Principais
 
+### Cadastro e Login
+!["signup"](./assets/image-6.png)
+
+#### Exemplo de usuário para cadastro:
+````json
+{
+  "username": "maria_silva",
+  "email": "maria.silva@example.com",
+  "phone": "21987654321",
+  "cpf": "43892165740",
+  "password": "Maria@2025",
+}
+
+````
+!["example"](./assets/image-7.png)
+
+### Perfil do investidor
+!["Profile investor"](./assets/image-8.png)
 ### Dashboard Principal (Home)
 
 - **Portfólio Personalizado**: Acompanhe seus investimentos em tempo real

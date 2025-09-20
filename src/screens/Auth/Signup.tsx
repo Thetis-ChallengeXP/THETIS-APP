@@ -7,6 +7,7 @@ import { useAuth } from '../../contexts/AuthContextStorage';
 type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
+  InvestorProfile: undefined;
   Home: undefined;
 };
 
@@ -39,7 +40,7 @@ const Signup: React.FC<Props> = ({ navigation }) => {
   const { register, loading, error, user, clearError } = useAuth();
 
   useEffect(() => {
-    if (user) navigation.replace('Home');
+    if (user) navigation.replace('InvestorProfile');
   }, [user, navigation]);
 
   useEffect(() => {
