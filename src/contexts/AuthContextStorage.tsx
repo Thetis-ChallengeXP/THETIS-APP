@@ -33,7 +33,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUser(currentUser);
         }
       } catch (err) {
-        console.log('Erro ao inicializar auth:', err);
+        // console.log('Erro ao inicializar auth:', err);
       } finally {
         setLoading(false);
         setIsInitialized(true);

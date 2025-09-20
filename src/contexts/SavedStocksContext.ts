@@ -1,4 +1,3 @@
-// utils/SavedStocksManager.ts
 import { Stock } from '../utils/stocksData';
 
 class SavedStocksManager {

@@ -71,7 +71,7 @@ const Home: React.FC<Props> = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ width: '100%', paddingBottom: 20 }}
         >
-          <SectionHeader title="Portifólio" onSeeMorePress={() => 'Ver mais portfólio'} />
+          <SectionHeader title="Para você" onSeeMorePress={() => 'Ver mais'} />
           <Styled.StockListContainer>
             <StockList stocks={portfolioStocks} showStatus={false} />
           </Styled.StockListContainer>
