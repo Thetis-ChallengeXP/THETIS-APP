@@ -1,9 +1,9 @@
-import React from 'react';
-import { Image, Text, View, TouchableOpacity } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { ProfileStyled as Styled } from './styled';
-import { useAuth } from '../../contexts/AuthContextStorage';
+import { authStorage } from '../../services/apiService';
 
 type RootStackParamList = {
   Splash: undefined;
@@ -32,33 +32,26 @@ interface Props {
   navigation: ProfileScreenNavigationProp;
 }
 
+interface UserData {
+  userId: string;
+  username: string;
+  email: string;
+}
+
 const Profile: React.FC<Props> = ({ navigation }) => {
-  const userData = {
-    name: useAuth().user?.username,
-    email: useAuth().user?.email,
-    phone: useAuth().user?.phone,
-    profilePicture: null,
-  };
+  const [user, setUser] = useState<UserData | null>(null);
 
-  const { logout } = useAuth();
-
-  const formatPhone = (phone: string | undefined) => {
-    if (!phone) return '';
-
-    const cleaned = phone.replace(/\D/g, '');
-
-    if (cleaned.length === 11) {
-      return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-    } else if (cleaned.length === 10) {
-      return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-    } else {
-      return phone;
-    }
-  };
+  useEffect(() => {
+    const loadUser = async () => {
+      const storedUser = await authStorage.getUser();
+      setUser(storedUser);
+    };
+    loadUser();
+  }, []);
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await authStorage.clearUser();
       navigation.reset({
         index: 0,
         routes: [{ name: 'Login' }],
@@ -66,6 +59,17 @@ const Profile: React.FC<Props> = ({ navigation }) => {
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
     }
+  };
+
+  if (!user) {
+    return <Text>Carregando...</Text>;
+  }
+
+  const userData = {
+    name: user.username,
+    email: user.email,
+    phone: '',
+    profilePicture: null,
   };
 
   return (
@@ -101,21 +105,6 @@ const Profile: React.FC<Props> = ({ navigation }) => {
               <Feather name="user" size={60} color="#BDBDBD" />
             </View>
           )}
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              right: 0,
-              backgroundColor: '#007AFF',
-              borderRadius: 15,
-              width: 30,
-              height: 30,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Feather name="camera" size={16} color="#FFF" />
-          </TouchableOpacity>
         </Styled.ProfileImageContainer>
 
         <Styled.NameText>{userData.name}</Styled.NameText>
@@ -132,16 +121,11 @@ const Profile: React.FC<Props> = ({ navigation }) => {
             <Feather name="mail" size={20} color="#007AFF" />
             <Styled.InfoValue>{userData.email}</Styled.InfoValue>
           </Styled.InfoItem>
-
-          <Styled.InfoItem>
-            <Feather name="phone" size={20} color="#007AFF" />
-            <Styled.InfoValue>{formatPhone(userData.phone)}</Styled.InfoValue>
-          </Styled.InfoItem>
         </Styled.InfoContainer>
       </Styled.Content>
 
       <Styled.BottomButtons>
-        <Styled.EditButton onPress={() => 'Edit profile'}>
+        <Styled.EditButton onPress={() => console.log('Editar perfil')}>
           <Feather name="edit" size={20} color="#FFF" />
           <Text style={{ color: '#FFF', marginLeft: 10 }}>Editar perfil</Text>
         </Styled.EditButton>

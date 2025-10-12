@@ -2,13 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStyled as Styled } from './styled';
-import { useAuth } from '../../contexts/AuthContextStorage';
+import { userService } from '../../services/apiService';
 
 type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
-  Home: undefined;
+  Home: {
+    userToken: string;
+    userId?: string;
+  };
   PasswordReset: undefined;
+  InvestorProfile: {
+    userToken: string;
+    userData?: any;
+  };
 };
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -21,30 +28,40 @@ const Login: React.FC<Props> = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const { login, loading, error, user, clearError } = useAuth();
-
-  useEffect(() => {
-    if (user) {
-      navigation.replace('Home');
-    }
-  }, [user, navigation]);
-
-  useEffect(() => {
-    if (error) {
-      const timeout = setTimeout(() => clearError(), 5000);
-      return () => clearTimeout(timeout);
-    }
-  }, [error, clearError]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async () => {
     if (!usernameOrEmail.trim() || !password) {
       return Alert.alert('Erro', 'Preencha todos os campos');
     }
 
+    setLoading(true);
+    setError(null);
+
     try {
-      await login({ usernameOrEmail, password });
-    } catch (err) {}
+      const response = await userService.login({ usernameOrEmail, password });
+
+      // console.log('=== LOGIN SUCCESS ===');
+      // console.log('Token recebido:', response.token);
+      // console.log('Usuário:', response.user);
+
+      // navigation.replace('InvestorProfile', {
+      //   userToken: response.token,
+      //   userData: response.user,
+      // });
+
+      navigation.replace('Home', {
+        userToken: response.token,
+        userId: response.user.userId,
+      });
+    } catch (err: any) {
+      // console.log('Erro no login:', err);
+      setError(err.message || 'Erro ao fazer login');
+      // Alert.alert('Erro', err.message || 'Erro ao fazer login');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -113,11 +130,6 @@ const Login: React.FC<Props> = ({ navigation }) => {
             <Styled.LoginButtonText>Entrar</Styled.LoginButtonText>
           )}
         </Styled.LoginButton>
-
-        {/*test 
-        <Styled.LoginButton onPress={() => navigation.navigate('Home')}>
-          <Styled.LoginButtonText>Entrar</Styled.LoginButtonText>
-        </Styled.LoginButton> */}
       </Styled.ContentSection>
     </Styled.Container>
   );
