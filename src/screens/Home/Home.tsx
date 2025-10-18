@@ -6,6 +6,7 @@ import { HomeStyled as Styled } from './styled';
 import { MagnifyingGlassIcon, BellIcon, ChatBubbleLeftIcon } from 'react-native-heroicons/outline';
 import StockList from '../../components/StockList/StockList';
 import TabBar from '../../components/TabBar/TabBar';
+import { Text } from 'react-native';
 import SectionHeader from '../../components/SearchHeader/SearchHeader';
 import {
   convertAWSRecommendationsToStocks,
@@ -125,9 +126,9 @@ const Home: React.FC<Props> = ({ navigation }) => {
             ) : userRecommendations.length > 0 ? (
               <StockList stocks={userRecommendations} showStatus={true} />
             ) : (
-              <p style={{ fontFamily: 'sans-serif' }}>
+              <Text style={{ fontFamily: 'sans-serif' }}>
                 Nenhuma recomendação personalizada disponível no momento
-              </p>
+              </Text>
             )}
           </Styled.StockListContainer>
 
@@ -140,7 +141,7 @@ const Home: React.FC<Props> = ({ navigation }) => {
             ) : trendingStocks.length > 0 ? (
               <StockList stocks={trendingStocks} showStatus={true} />
             ) : (
-              <p style={{ fontFamily: 'sans-serif' }}>Nenhuma tendência disponível no momento</p>
+              <Text style={{ fontFamily: 'sans-serif' }}>Nenhuma tendência disponível no momento</Text>
             )}
           </Styled.StockListContainer>
         </ScrollView>
