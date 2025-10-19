@@ -20,14 +20,15 @@ const StockInfo = styled.View`
 const LogoContainer = styled.View`
   width: 40px;
   height: 40px;
-  border-radius: 20px;
-  background-color: #e6e6e6;
   align-items: center;
   justify-content: center;
   margin-right: 12px;
 `;
 
-const LogoImage = styled.Image``;
+const LogoImage = styled.Image<{ width?: number; height?: number }>`
+  width: ${(props) => props.width || 40}px;
+  height: ${(props) => props.height || 40}px;
+`;
 
 const StockSymbol = styled.Text`
   font-weight: bold;
@@ -43,6 +44,7 @@ const StockName = styled.Text`
 const StockTrend = styled.View`
   width: 60px;
   height: 24px;
+  margin-bottom: 12px;
   align-items: center;
   justify-content: center;
   flex: 1;
@@ -51,6 +53,7 @@ const StockTrend = styled.View`
 const TrendLineGraph = styled.Image`
   width: 60px;
   height: 24px;
+  margin-bottom: 4px;
 `;
 
 const PriceContainer = styled.View`
@@ -85,7 +88,7 @@ const StatusText = styled.Text<{ trend?: 'up' | 'down' | 'neutral' }>`
   color: ${({ trend }) => {
     switch (trend) {
       case 'up':
-        return '#2e7d32'
+        return '#2e7d32';
       case 'down':
         return '#c62828';
       case 'neutral':
@@ -110,7 +113,7 @@ const ChangeText = styled.Text<{ trend: 'up' | 'down' | 'neutral' }>`
       case 'neutral':
         return '#ff9800';
       default:
-        return '#757575'; 
+        return '#757575';
     }
   }};
   font-weight: 500;

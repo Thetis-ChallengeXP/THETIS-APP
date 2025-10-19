@@ -9,7 +9,6 @@ import {
   Platform,
   Alert,
   ActivityIndicator,
-  Keyboard,
   Image,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -32,6 +31,11 @@ interface Message {
   timestamp: Date;
 }
 
+interface GeminiHistoryItem {
+  role: 'user' | 'model';
+  parts: Array<{ text: string }>;
+}
+
 type ChatBotScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ChatBot'>;
 
 interface Props {
@@ -51,6 +55,7 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
   ]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [conversationHistory, setConversationHistory] = useState<GeminiHistoryItem[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
   const insets = useSafeAreaInsets();
 
@@ -85,13 +90,25 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
     }
   }, [user, navigation]);
 
+  useEffect(() => {
+    const checkChatbotHealth = async () => {
+      try {
+        const isHealthy = await chatbotService.checkHealth();
+        if (!isHealthy) {
+          console.warn('Chatbot pode estar indisponível');
+        }
+      } catch (error) {
+        console.error('Erro ao verificar saúde do chatbot:', error);
+      }
+    };
+
+    if (user) {
+      checkChatbotHealth();
+    }
+  }, [user]);
+
   const sendMessage = async () => {
     if (!inputText.trim()) return;
-
-    if (!user) {
-      Alert.alert('Erro', 'Você precisa estar logado para enviar mensagens.');
-      return;
-    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -105,7 +122,7 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
     setIsLoading(true);
 
     try {
-      const response = await chatbotService.sendMessage(userMessage.text);
+      const response = await chatbotService.sendMessage(userMessage.text, conversationHistory);
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -115,7 +132,23 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
       };
 
       setMessages((prev) => [...prev, botMessage]);
+
+      setConversationHistory((prev) => [
+        ...prev,
+        {
+          role: 'user',
+          parts: [{ text: userMessage.text }],
+        },
+        {
+          role: 'model',
+          parts: [{ text: response.message }],
+        },
+      ]);
+
+      // console.log('Mensagem enviada e histórico atualizado');
     } catch (error: any) {
+      // console.error('Erro ao enviar mensagem:', error);
+
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: 'Desculpe, ocorreu um erro ao processar sua mensagem. Tente novamente.',
@@ -128,12 +161,46 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
       Alert.alert(
         'Erro',
         error.message ||
-          'Não foi possível conectar com o assistente. Verifique sua conexão com a internet.',
+          'Não foi possível conectar com o assistente. Verifique se o back-end está rodando na porta 3000.',
         [{ text: 'OK' }]
       );
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const resetConversation = async () => {
+    Alert.alert(
+      'Resetar Conversa',
+      'Deseja iniciar uma nova conversa? O histórico atual será perdido.',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Resetar',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await chatbotService.resetConversation();
+              setConversationHistory([]);
+              setMessages([
+                {
+                  id: Date.now().toString(),
+                  text: `Olá${user ? `, ${user.username}` : ''}! Conversa reiniciada. Como posso ajudá-lo?`,
+                  isUser: false,
+                  timestamp: new Date(),
+                },
+              ]);
+              // console.log('Conversa resetada');
+            } catch (error) {
+              // console.error('Erro ao resetar conversa:', error);
+            }
+          },
+        },
+      ]
+    );
   };
 
   useEffect(() => {
@@ -151,22 +218,6 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
     });
   };
 
-  if (!user) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#f8f9fa',
-        }}
-      >
-        <ActivityIndicator size="large" color="#1E88E5" />
-        <Text style={{ marginTop: 16, color: '#666' }}>Verificando autenticação...</Text>
-      </View>
-    );
-  }
-
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: '#f8f9fa' }}
@@ -178,7 +229,9 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
           <Styled.BackText>← Voltar</Styled.BackText>
         </TouchableOpacity>
         <Styled.HeaderTitle>Assistente Thetis</Styled.HeaderTitle>
-        <View style={{ width: 60 }} />
+        <TouchableOpacity onPress={resetConversation}>
+          <Text style={{ color: '#1E88E5', fontSize: 14 }}>Resetar</Text>
+        </TouchableOpacity>
       </Styled.Header>
 
       <Styled.MessagesContainer>

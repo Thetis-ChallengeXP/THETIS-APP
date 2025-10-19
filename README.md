@@ -20,26 +20,52 @@ Inspirado na deusa grega Thetis, protetora dos mares e conhecedora dos destinos,
 
 Thetis é um aplicativo mobile inteligente desenvolvido em React Native que utiliza inteligência artificial para oferecer insights precisos sobre o mercado financeiro. Com uma interface moderna e intuitiva, o app ajuda investidores de todos os níveis a tomar decisões mais informadas.
 
+## Backend ( AVISO )
+
+O backend do projeto está hospedado na plataforma Render.
+
+o Render entra em modo de hibernação automaticamente após 15 minutos de inatividade, ou seja, se nenhuma requisição for feita nesse período, o servidor será temporariamente desligado.
+Ao fazer uma nova requisição, ele será reiniciado automaticamente (isso pode levar alguns segundos/minutos).
+
+![descrição do render](./assets/render.png)
+
+## Environment (Aviso)
+
+Para o funcionamento correto do projeto, é necessário criar um arquivo .env na raiz do projeto com as seguintes variáveis:
+
+```env
+BASE_URL=https://api-thetis-node.onrender.com/api
+BASE_URL_PROFILE_INVESTOR=https://api-thetis-node.onrender.com/profile
+AUTH_URL=https://api-thetis-node.onrender.com/auth
+CHATBOT_URL=https://api-thetis-node.onrender.com/chatbot
+AWS_RECOMMENDATIONS_URL=https://k3uq0zpiy0.execute-api.us-east-1.amazonaws.com/prod/recommendations
+AWS_TOP_STOCKS_URL=https://6lgshugcuj.execute-api.us-east-1.amazonaws.com/prod/analyze
+```
+
 ## Funcionalidades Principais
 
 ### Cadastro e Login
-!["signup"](./assets/image-6.png)
+
+!["signup"](./assets/cadastro.png)
 
 #### Exemplo de usuário para cadastro:
-````json
+
+```json
 {
   "username": "maria_silva",
   "email": "maria.silva@example.com",
   "phone": "21987654321",
   "cpf": "43892165740",
-  "password": "Maria@2025",
+  "password": "Maria@2025"
 }
+```
 
-````
-!["example"](./assets/image-7.png)
+!["example"](./assets/storage.png)
 
 ### Perfil do investidor
-!["Profile investor"](./assets/image-8.png)
+
+!["Profile investor"](./assets/perfil_investidor.png)
+
 ### Dashboard Principal (Home)
 
 - **Portfólio Personalizado**: Acompanhe seus investimentos em tempo real
@@ -47,16 +73,16 @@ Thetis é um aplicativo mobile inteligente desenvolvido em React Native que util
 - **Visão Geral**: Panorama completo do mercado financeiro
 - **Busca Inteligente**: Encontre rapidamente ações e ativos
 
-!["Home"](./assets/image.png)
+!["Home"](./assets/home.png)
 
 ### Assistente Virtual (ChatBot) !AVISO
 
-- **AVISO**: ChatBot só estará disponível coma integração completa do back-end
 - **IA Especializada**: Chatbot treinado em temas de investimento
 - **Suporte**: Tire dúvidas sobre a plataforma Thetis
 - **Interface Conversacional**: Experiência natural e intuitiva
 
-!["chatbot"](./assets/image-3.png)
+!["chatbot"](./assets/chat.png)
+!["messagem do chat"](./assets/chat2.png)
 
 ### Central de Notícias (Newspaper)
 
@@ -64,7 +90,7 @@ Thetis é um aplicativo mobile inteligente desenvolvido em React Native que util
 - **Atualizações em Tempo Real**: Mantenha-se sempre informado
 - **Categorização Inteligente**: Notícias organizadas por setor e importância
 
-!["noticias"](./assets/image-2.png)
+!["noticias"](./assets/noticias.png)
 
 ### Favoritos (Bookmark)
 
@@ -72,13 +98,13 @@ Thetis é um aplicativo mobile inteligente desenvolvido em React Native que util
 - **Organização Inteligente**: Categorias automáticas e manuais
 - **Acesso Rápido**: Encontre rapidamente seus ativos favoritos
 
-!["salvos"](./assets/image-bookmark.png)
+!["salvos"](./assets/salvos.png)
 
 ### Perfil do Usuário
 
 - **Gestão de Conta**: Informações pessoais e preferências
 
-!["perfil"](./assets/image-5.png)
+!["perfil"](./assets/perfil.png)
 
 ## Tecnologias Utilizadas
 

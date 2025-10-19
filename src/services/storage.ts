@@ -52,13 +52,13 @@ const isValidEmail = (email: string): boolean => {
 export const storageService = {
   register: async (userData: CreateUserRequest): Promise<UserResponse> => {
     try {
-      console.log('🔄 [STORAGE] Iniciando registro de usuário:', {
-        username: userData.username,
-        email: userData.email,
-        phone: userData.phone,
-        cpf: userData.cpf,
-        hasPassword: !!userData.password,
-      });
+      // console.log('[STORAGE] Iniciando registro de usuário:', {
+      //   username: userData.username,
+      //   email: userData.email,
+      //   phone: userData.phone,
+      //   cpf: userData.cpf,
+      //   hasPassword: !!userData.password,
+      // });
 
       if (!userData.username?.trim()) {
         throw new Error('Nome de usuário é obrigatório');
@@ -148,10 +148,10 @@ export const storageService = {
 
   login: async (credentials: LoginRequest): Promise<UserResponse> => {
     try {
-      console.log('🔄 [STORAGE] Iniciando login:', {
-        usernameOrEmail: credentials.usernameOrEmail,
-        hasPassword: !!credentials.password,
-      });
+      // console.log('[STORAGE] Iniciando login:', {
+      //   usernameOrEmail: credentials.usernameOrEmail,
+      //   hasPassword: !!credentials.password,
+      // });
 
       if (!credentials.usernameOrEmail?.trim()) {
         throw new Error('Email ou nome de usuário é obrigatório');
@@ -239,7 +239,6 @@ export const storageService = {
 
   requestPasswordReset: async (email: string): Promise<void> => {
     try {
-
       const existingUsersJson = await AsyncStorage.getItem(STORAGE_KEYS.USERS);
       const existingUsers: User[] = existingUsersJson ? JSON.parse(existingUsersJson) : [];
 

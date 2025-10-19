@@ -34,6 +34,22 @@ interface Props {
   navigation: StockDetailNavigationProp;
 }
 
+const companyDescriptions: Record<string, string> = {
+  AAPL: 'A Apple Inc. é uma empresa americana que projeta, fabrica e vende produtos eletrônicos de consumo, software e serviços online. É uma das Big Techs, conhecida pelo iPhone, iPad e MacBook.',
+  MSFT: 'A Microsoft Corporation é uma empresa multinacional de tecnologia focada em software, hardware e serviços em nuvem. É conhecida pelo sistema operacional Windows e pela plataforma Azure.',
+  NVDA: 'A NVIDIA Corporation é líder mundial em processamento gráfico e inteligência artificial. Suas GPUs são amplamente usadas em jogos, computação científica e data centers.',
+  AMZN: 'A Amazon.com, Inc. é uma das maiores empresas de comércio eletrônico e computação em nuvem do mundo, fundada por Jeff Bezos. Oferece produtos e serviços via Amazon Web Services (AWS).',
+  TSLA: 'A Tesla, Inc. é uma empresa americana de veículos elétricos e energia limpa fundada por Elon Musk. É referência em inovação automotiva e desenvolvimento de baterias e energia solar.',
+};
+
+const companyLogos: Record<string, any> = {
+  AAPL: require('../../images/brands/apple_logo.png'),
+  MSFT: require('../../images/brands/msft_logo.png'),
+  NVDA: require('../../images/brands/nvda_logo.png'),
+  AMZN: require('../../images/brands/amzn_logo.png'),
+  TSLA: require('../../images/brands/tsla_logo.png'),
+};
+
 const StockDetail: React.FC<Props> = ({ route, navigation }) => {
   const { stock } = route.params;
   const { saveStock, unsaveStock, isStockSaved } = useSavedStocks();
@@ -57,16 +73,7 @@ const StockDetail: React.FC<Props> = ({ route, navigation }) => {
       Alert.alert('Removido', 'Ação removida dos salvos');
     } else {
       saveStock(stock);
-      Alert.alert('Salvo!', 'Ação salva com sucesso!', [
-        {
-          text: 'OK',
-          style: 'default',
-        },
-        // {
-        //   text: 'Ver Salvos',
-        //   onPress: () => navigation.navigate('BookMark'),
-        // },
-      ]);
+      Alert.alert('Salvo!', 'Ação salva com sucesso!');
     }
   };
 
@@ -78,17 +85,10 @@ const StockDetail: React.FC<Props> = ({ route, navigation }) => {
         </TouchableOpacity>
         <Styled.HeaderTitle>{stock.name}</Styled.HeaderTitle>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          <TouchableOpacity
-            style={{ padding: 4 }}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
+          <TouchableOpacity style={{ padding: 4 }}>
             <BellIcon color="#000" size={24} />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleBookmarkPress}
-            style={{ padding: 4 }}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
+          <TouchableOpacity onPress={handleBookmarkPress} style={{ padding: 4 }}>
             {isStockSaved(stock.id) ? (
               <BookmarkSolidIcon color="#007AFF" size={24} />
             ) : (
@@ -106,7 +106,7 @@ const StockDetail: React.FC<Props> = ({ route, navigation }) => {
           <Styled.StockBasicInfo>
             <Styled.LogoContainer>
               <Styled.LogoImage
-                source={require('../../images/brands/apple_logo.png')}
+                source={companyLogos[stock.symbol] || companyLogos['AAPL']}
                 resizeMode="contain"
               />
             </Styled.LogoContainer>
@@ -157,9 +157,8 @@ const StockDetail: React.FC<Props> = ({ route, navigation }) => {
         <Styled.StockDetailsContainer>
           <Styled.SectionTitle>Sobre {stock.name}</Styled.SectionTitle>
           <Styled.StockDescription>
-            A Apple Inc. é uma empresa multinacional americana que projeta, desenvolve e vende
-            eletrônicos de consumo, software de computador e serviços online. É considerada uma das
-            Big Techs, junto com Amazon, Google, Microsoft e Meta.
+            {companyDescriptions[stock.symbol] ||
+              'Descrição não disponível para esta empresa no momento.'}
           </Styled.StockDescription>
 
           <Styled.StockMetricsContainer>

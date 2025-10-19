@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../../routes';
+import { Alert } from 'react-native';
 
 import InvestorProfileStep1 from './InvestorProfileStep1';
 import InvestorProfileStep2 from './InvestorProfileStep2';
@@ -30,12 +33,9 @@ interface FullProfileData {
 }
 
 const Stack = createStackNavigator<InvestorProfileStackParamList>();
+type Props = StackScreenProps<RootStackParamList, 'InvestorProfile'>;
 
-interface Props {
-  navigation: any;
-}
-
-const InvestorProfileController: React.FC<Props> = ({ navigation: externalNavigation }) => {
+const InvestorProfileController: React.FC<Props> = ({ navigation: externalNavigation, route }) => {
   const [profileData, setProfileData] = useState<FullProfileData>({
     ageRange: '',
     monthlyIncome: '',
@@ -54,9 +54,33 @@ const InvestorProfileController: React.FC<Props> = ({ navigation: externalNaviga
     educationInterest: '',
   });
 
+  const userToken = route?.params?.userToken;
+  const userData = route?.params?.userData;
+
+  useEffect(() => {
+    // console.log('=== INVESTOR PROFILE CONTROLLER ===');
+    // console.log('Route params completos:', route?.params);
+    // console.log('Token recebido no controller:', userToken);
+    // console.log('Token tipo:', typeof userToken);
+    // console.log('Token está vazio?', !userToken || userToken.trim() === '');
+    // console.log('Token tamanho:', userToken?.length);
+    // console.log('User data:', userData);
+
+    if (!userToken) {
+      // console.log('TOKEN NÃO ENCONTRADO NO CONTROLLER!');
+      Alert.alert('Erro', 'Token de autenticação não encontrado. Faça login novamente.', [
+        { text: 'OK', onPress: () => externalNavigation.navigate('Login') },
+      ]);
+    }
+  }, [userToken, userData, route]);
+
   const updateProfileData = (field: keyof FullProfileData, value: any) => {
     setProfileData((prev) => ({ ...prev, [field]: value }));
   };
+
+  if (!userToken) {
+    return null;
+  }
 
   return (
     <Stack.Navigator initialRouteName="InvestorProfileStep1" screenOptions={{ headerShown: false }}>
@@ -132,6 +156,7 @@ const InvestorProfileController: React.FC<Props> = ({ navigation: externalNaviga
             }}
             fullProfileData={profileData}
             updateProfileData={updateProfileData}
+            token={userToken}
           />
         )}
       </Stack.Screen>

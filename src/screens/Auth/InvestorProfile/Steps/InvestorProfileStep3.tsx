@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStyled as Styled } from '../../styled';
 import { ProfileStyled } from '../styled';
+import { profileService, InvestorProfileRequest } from '../../../../services/apiProfileInvestor';
 
 type RootStackParamList = {
   Signup: undefined;
@@ -24,24 +25,15 @@ interface ProfileData {
 }
 
 interface FullProfileData {
-  // Step 1
   ageRange: string;
   monthlyIncome: string;
   workSituation: string;
   investmentPercentage: string;
   emergencyReserve: string;
-  // Step 2
   experience: string;
   usedProducts: string[];
   informationSource: string;
   techComfort: string;
-  // Step 3
-  mainGoals: string[];
-  timeHorizon: string;
-  riskTolerance: string;
-  liquidityPreference: string;
-  trackingFrequency: string;
-  educationInterest: string;
 }
 
 interface Props {
@@ -49,6 +41,7 @@ interface Props {
   profileData: ProfileData;
   fullProfileData: FullProfileData;
   updateProfileData: (field: keyof ProfileData, value: any) => void;
+  token: string;
 }
 
 const InvestorProfileStep3: React.FC<Props> = ({
@@ -56,7 +49,10 @@ const InvestorProfileStep3: React.FC<Props> = ({
   profileData,
   fullProfileData,
   updateProfileData,
+  token,
 }) => {
+  const [loading, setLoading] = useState(false);
+
   const validateStep = () => {
     return profileData.mainGoals.length > 0 && profileData.timeHorizon && profileData.riskTolerance;
   };
@@ -65,10 +61,15 @@ const InvestorProfileStep3: React.FC<Props> = ({
     navigation.navigate('InvestorProfileStep2');
   };
 
-  const handleSubmit = () => {
-    if (!validateStep()) return;
+  const handleSubmit = async () => {
+    if (!validateStep()) {
+      Alert.alert('Erro', 'Preencha todos os campos obrigatórios.');
+      return;
+    }
 
-    const completeProfileData = {
+    setLoading(true);
+
+    const completeProfileData: InvestorProfileRequest = {
       demographic: {
         ageRange: fullProfileData.ageRange,
         monthlyIncome: fullProfileData.monthlyIncome,
@@ -94,11 +95,21 @@ const InvestorProfileStep3: React.FC<Props> = ({
       },
     };
 
-    Alert.alert(
-      'Sucesso!',
-      'Perfil configurado com sucesso! Agora você terá recomendações personalizadas.',
-      [{ text: 'OK', onPress: () => navigation.navigate('Login') }]
-    );
+    try {
+      await profileService.createInvestorProfile(completeProfileData, token);
+      Alert.alert(
+        'Sucesso!',
+        'Perfil configurado com sucesso! Agora você terá recomendações personalizadas.'
+      );
+
+      setTimeout(() => {
+        navigation.replace('Login');
+      }, 1000);
+    } catch (error: any) {
+      Alert.alert('Erro', error.message || 'Erro ao criar perfil.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const toggleMultiSelect = (value: string) => {
@@ -115,16 +126,16 @@ const InvestorProfileStep3: React.FC<Props> = ({
 
   const renderProgressBar = () => (
     <ProfileStyled.ProgressContainer>
-      <ProfileStyled.ProgressStep completed={true}>
-        <ProfileStyled.ProgressStepText completed={true}>1</ProfileStyled.ProgressStepText>
+      <ProfileStyled.ProgressStep completed>
+        <ProfileStyled.ProgressStepText completed>1</ProfileStyled.ProgressStepText>
       </ProfileStyled.ProgressStep>
-      <ProfileStyled.ProgressLine completed={true} />
-      <ProfileStyled.ProgressStep completed={true}>
-        <ProfileStyled.ProgressStepText completed={true}>2</ProfileStyled.ProgressStepText>
+      <ProfileStyled.ProgressLine completed />
+      <ProfileStyled.ProgressStep completed>
+        <ProfileStyled.ProgressStepText completed>2</ProfileStyled.ProgressStepText>
       </ProfileStyled.ProgressStep>
-      <ProfileStyled.ProgressLine completed={true} />
-      <ProfileStyled.ProgressStep active={true}>
-        <ProfileStyled.ProgressStepText active={true}>3</ProfileStyled.ProgressStepText>
+      <ProfileStyled.ProgressLine completed />
+      <ProfileStyled.ProgressStep active>
+        <ProfileStyled.ProgressStepText active>3</ProfileStyled.ProgressStepText>
       </ProfileStyled.ProgressStep>
     </ProfileStyled.ProgressContainer>
   );
@@ -132,10 +143,7 @@ const InvestorProfileStep3: React.FC<Props> = ({
   return (
     <Styled.Container>
       <Styled.ContentSection
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingBottom: 40,
-        }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
@@ -285,14 +293,15 @@ const InvestorProfileStep3: React.FC<Props> = ({
             </ProfileStyled.SecondaryButton>
 
             <ProfileStyled.NextButton
-              onPress={() => navigation.navigate('Login')}
-              disabled={!validateStep()}
-              style={{
-                opacity: validateStep() ? 1 : 0.5,
-                width: '100%',
-              }}
+              onPress={handleSubmit}
+              disabled={!validateStep() || loading}
+              style={{ opacity: validateStep() ? 1 : 0.5, width: '100%' }}
             >
-              <ProfileStyled.NextButtonText>Finalizar Perfil</ProfileStyled.NextButtonText>
+              {loading ? (
+                <ProfileStyled.NextButtonText>Carregando...</ProfileStyled.NextButtonText>
+              ) : (
+                <ProfileStyled.NextButtonText>Finalizar Perfil</ProfileStyled.NextButtonText>
+              )}
             </ProfileStyled.NextButton>
           </ProfileStyled.NavigationContainer>
         </ProfileStyled.SectionContainer>

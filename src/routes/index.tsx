@@ -19,7 +19,10 @@ export type RootStackParamList = {
   Splash: undefined;
   Login: undefined;
   Signup: undefined;
-  InvestorProfile: undefined;
+  InvestorProfile: {
+    userToken: string;
+    userData?: any;
+  };
   PasswordReset: undefined;
   ChatBot: undefined;
   Home: undefined;

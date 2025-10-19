@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStyled as Styled } from './styled';
-import { useAuth } from '../../contexts/AuthContextStorage';
+import { userService } from '../../services/apiService';
 
 type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
-  InvestorProfile: undefined;
+  InvestorProfile: {
+    userToken: string;
+    userData?: any;
+  };
   Home: undefined;
 };
 
@@ -37,53 +40,23 @@ const Signup: React.FC<Props> = ({ navigation }) => {
     confirmPassword: '',
   });
 
-  const { register, loading, error, user, clearError } = useAuth();
-
-  useEffect(() => {
-    if (user) navigation.replace('InvestorProfile');
-  }, [user, navigation]);
-
-  useEffect(() => {
-    if (error) {
-      Alert.alert('Erro', error);
-      clearError();
-    }
-  }, [error, clearError]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const formatPhone = (text: string) => {
     const cleaned = text.replace(/\D/g, '');
-    let formatted = cleaned;
-
-    if (cleaned.length > 0) {
-      if (cleaned.length <= 2) {
-        formatted = `(${cleaned}`;
-      } else if (cleaned.length <= 6) {
-        formatted = `(${cleaned.slice(0, 2)}) ${cleaned.slice(2)}`;
-      } else {
-        formatted = `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7, 11)}`;
-      }
-    }
-
-    return formatted;
+    if (cleaned.length <= 2) return `(${cleaned}`;
+    if (cleaned.length <= 6) return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2)}`;
+    return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7, 11)}`;
   };
 
   const formatCPF = (text: string) => {
     const cleaned = text.replace(/\D/g, '');
-    let formatted = cleaned;
-
-    if (cleaned.length > 0) {
-      if (cleaned.length <= 3) {
-        formatted = cleaned;
-      } else if (cleaned.length <= 6) {
-        formatted = `${cleaned.slice(0, 3)}.${cleaned.slice(3)}`;
-      } else if (cleaned.length <= 9) {
-        formatted = `${cleaned.slice(0, 3)}.${cleaned.slice(3, 6)}.${cleaned.slice(6)}`;
-      } else {
-        formatted = `${cleaned.slice(0, 3)}.${cleaned.slice(3, 6)}.${cleaned.slice(6, 9)}-${cleaned.slice(9, 11)}`;
-      }
-    }
-
-    return formatted;
+    if (cleaned.length <= 3) return cleaned;
+    if (cleaned.length <= 6) return `${cleaned.slice(0, 3)}.${cleaned.slice(3)}`;
+    if (cleaned.length <= 9)
+      return `${cleaned.slice(0, 3)}.${cleaned.slice(3, 6)}.${cleaned.slice(6)}`;
+    return `${cleaned.slice(0, 3)}.${cleaned.slice(3, 6)}.${cleaned.slice(6, 9)}-${cleaned.slice(9, 11)}`;
   };
 
   const handleSignup = async () => {
@@ -95,14 +68,12 @@ const Signup: React.FC<Props> = ({ navigation }) => {
       password: '',
       confirmPassword: '',
     };
-
     let hasError = false;
 
     if (!username.trim()) {
       errors.username = 'Nome de usuário é obrigatório.';
       hasError = true;
     }
-
     if (!email.trim()) {
       errors.email = 'Email é obrigatório.';
       hasError = true;
@@ -148,15 +119,37 @@ const Signup: React.FC<Props> = ({ navigation }) => {
     setFieldErrors(errors);
     if (hasError) return;
 
+    setLoading(true);
+    setError(null);
+
     try {
-      await register({
+      const response = await userService.register({
         username,
         email,
         phone: cleanedPhone,
         cpf: cleanedCpf,
         password,
       });
-    } catch (err) {}
+
+      // console.log('=== REGISTER SUCCESS ===');
+      // console.log('Token recebido:', response.token);
+      // console.log('Usuário:', response.user);
+
+      // Alert.alert('Sucesso!', 'Cadastro realizado com sucesso!');
+
+      setTimeout(() => {
+        navigation.replace('InvestorProfile', {
+          userToken: response.token,
+          userData: response.user,
+        });
+      }, 100);
+    } catch (err: any) {
+      // console.log('Erro no cadastro:', err);
+      setError(err.message || 'Erro ao cadastrar usuário');
+      // Alert.alert('Erro', err.message || 'Erro ao cadastrar usuário');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -170,10 +163,7 @@ const Signup: React.FC<Props> = ({ navigation }) => {
       </Styled.TopSection>
 
       <Styled.ContentSection
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingBottom: 40,
-        }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >

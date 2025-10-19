@@ -1,5 +1,11 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { storageService, UserResponse, CreateUserRequest, LoginRequest } from '../services/storage';
+import {
+  UserResponse,
+  CreateUserRequest,
+  LoginRequest,
+  userService,
+  authStorage,
+} from '../services/apiService';
 
 interface AuthContextData {
   user: UserResponse | null;
@@ -28,12 +34,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const initializeAuth = async () => {
       try {
         setLoading(true);
-        const currentUser = await storageService.getCurrentUser();
+        const currentUser = await authStorage.getUser();
         if (currentUser) {
           setUser(currentUser);
         }
       } catch (err) {
-        // console.log('Erro ao inicializar auth:', err);
+        console.error('Erro ao inicializar auth:', err);
       } finally {
         setLoading(false);
         setIsInitialized(true);
@@ -48,8 +54,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const userData = await storageService.login(credentials);
-      setUser(userData);
+      const response = await userService.login(credentials);
+      setUser(response.user);
     } catch (err: any) {
       setError(err.message);
       throw err;
@@ -63,8 +69,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const newUser = await storageService.register(userData);
-      setUser(newUser);
+      const response = await userService.register(userData);
+      setUser(response.user);
     } catch (err: any) {
       setError(err.message);
       throw err;
@@ -78,7 +84,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      await storageService.logout();
+      await authStorage.clearUser();
       setUser(null);
     } catch (err: any) {
       setError(err.message);
