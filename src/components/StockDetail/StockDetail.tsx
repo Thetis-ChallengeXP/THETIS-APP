@@ -2,9 +2,7 @@ import React from 'react';
 import { View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ArrowLeftIcon, BellIcon } from 'react-native-heroicons/outline';
-import { BookmarkIcon } from 'react-native-heroicons/outline';
-import { BookmarkIcon as BookmarkSolidIcon } from 'react-native-heroicons/solid';
+import { Feather } from '@expo/vector-icons';
 import { StockDetailStyled as Styled } from './styled';
 import { useSavedStocks } from '../../contexts/SavedStocksContext';
 
@@ -81,19 +79,19 @@ const StockDetail: React.FC<Props> = ({ route, navigation }) => {
     <Styled.Container>
       <Styled.Header>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeftIcon color="#000" size={24} />
+          <Feather name="arrow-left" size={24} color="#000" />
         </TouchableOpacity>
         <Styled.HeaderTitle>{stock.name}</Styled.HeaderTitle>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
           <TouchableOpacity style={{ padding: 4 }}>
-            <BellIcon color="#000" size={24} />
+            <Feather name="bell" size={24} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleBookmarkPress} style={{ padding: 4 }}>
-            {isStockSaved(stock.id) ? (
-              <BookmarkSolidIcon color="#007AFF" size={24} />
-            ) : (
-              <BookmarkIcon color="#000" size={24} />
-            )}
+            <Feather
+              name={isStockSaved(stock.id) ? 'bookmark' : 'bookmark'}
+              size={24}
+              color={isStockSaved(stock.id) ? '#007AFF' : '#000'}
+            />
           </TouchableOpacity>
         </View>
       </Styled.Header>

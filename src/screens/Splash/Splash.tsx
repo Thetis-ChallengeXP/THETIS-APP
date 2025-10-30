@@ -16,7 +16,7 @@ interface Props {
 
 const Splash: React.FC<Props> = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.5)).current;
+  const scaleAnim = useRef(new Animated.Value(0.8)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -92,15 +92,15 @@ const Container = styled.View`
 `;
 
 const AnimatedLogo = styled(Animated.Image)`
-  width: 120px;
-  height: 120px;
+  width: 160px;
+  height: 160px;
 `;
 
 const AnimatedTitle = styled(Animated.Text)`
   color: white;
-  font-size: 28px;
+  font-size: 36px;
   font-weight: bold;
-  margin-top: 16px;
+  margin-top: 12px;
   letter-spacing: 2px;
 `;
 

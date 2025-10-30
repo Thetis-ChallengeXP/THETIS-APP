@@ -15,8 +15,8 @@ const TopSection = styled.View`
 `;
 
 const Logo = styled.Image`
-  width: 80px;
-  height: 80px;
+  width: 145px;
+  height: 130px;
 `;
 
 const WavyBottom = styled.View`
@@ -58,7 +58,7 @@ const TabText = styled.Text<{ active?: boolean }>`
 `;
 
 const InputContainer = styled.View`
-  margin-bottom: 30px; 
+  margin-bottom: 30px;
 `;
 
 const InputWrapper = styled.View`
@@ -94,8 +94,8 @@ const LoginButton = styled.TouchableOpacity`
   padding: 15px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px; 
-  min-height: 50px; 
+  margin-bottom: 20px;
+  min-height: 50px;
 `;
 
 const LoginButtonText = styled.Text`

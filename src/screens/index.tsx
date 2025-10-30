@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 const screenOptions = {
   tabBarStyle: {
     borderTopWidth: 0,
-    height: 70,
+    height: 60,
     padding: 10,
 
     // Sombra para iOS
@@ -66,7 +66,7 @@ export default function Screens() {
         <Tab.Screen
           key={tab.name}
           name={tab.name}
-          component={tab.component}
+          component={tab.component as any}
           options={{
             headerShown: false,
             tabBarIcon: ({ color, size }) => <Ionicons name={tab.icon} color={color} size={size} />,

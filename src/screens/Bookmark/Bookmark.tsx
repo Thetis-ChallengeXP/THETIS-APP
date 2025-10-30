@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ScrollView, TouchableOpacity, Text, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+
 import { BookmarkStyled as Styled } from './styled';
-import { MagnifyingGlassIcon, BellIcon } from 'react-native-heroicons/outline';
-import { ArrowUpRightIcon } from 'react-native-heroicons/solid';
+import { Feather } from '@expo/vector-icons';
 import BookmarkItem from '../../components/BookmarkItem/BookmarkItem';
 import StockList from '../../components/StockList/StockList';
 import { bookmarkItems } from '../../utils/bookmarksData';
@@ -45,11 +45,11 @@ const Bookmark: React.FC<Props> = ({ navigation }) => {
       <Styled.Content>
         <Styled.Header>
           <Styled.SearchContainer>
-            <MagnifyingGlassIcon color="#999" size={20} />
+            <Feather name="search" size={20} color="#999" />
             <Styled.SearchPlaceholder>Procurar...</Styled.SearchPlaceholder>
           </Styled.SearchContainer>
           <TouchableOpacity>
-            <BellIcon color="#000" size={24} />
+            <Feather name="bell" size={22} color="#000" />
           </TouchableOpacity>
         </Styled.Header>
 

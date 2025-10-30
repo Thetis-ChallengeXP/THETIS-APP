@@ -208,7 +208,7 @@ const InvestorProfileStep3: React.FC<Props> = ({
           <ProfileStyled.QuestionContainer>
             <ProfileStyled.QuestionText>Perfil de risco?</ProfileStyled.QuestionText>
             <ProfileStyled.OptionsContainer>
-              {['Conservador', 'Moderado', 'Arrojado'].map((risk) => (
+              {['Conservador', 'Moderado', 'Arriscado'].map((risk) => (
                 <ProfileStyled.OptionButton
                   key={risk}
                   selected={profileData.riskTolerance === risk}

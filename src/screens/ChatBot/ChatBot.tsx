@@ -14,8 +14,7 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChatBotStyled as Styled } from './styled';
-import { PaperAirplaneIcon } from 'react-native-heroicons/outline';
-import { UserIcon } from 'react-native-heroicons/solid';
+import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContextStorage';
 import { chatbotService } from '../../services/apiService';
 
@@ -44,11 +43,10 @@ interface Props {
 
 const ChatBot: React.FC<Props> = ({ navigation }) => {
   const { user } = useAuth();
-
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: `Olá${user ? `, ${user.username}` : ''}! Sou o assistente virtual do Projeto Thetis. Posso ajudá-lo com dúvidas sobre a plataforma Thetis e temas relacionados a investimentos. Como posso ajudá-lo hoje?`,
+      text: `Olá! Sou o assistente virtual do Projeto Thetis. Posso ajudá-lo com dúvidas sobre a plataforma Thetis e temas relacionados a investimentos. Como posso ajudá-lo hoje?`,
       isUser: false,
       timestamp: new Date(),
     },
@@ -94,17 +92,12 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
     const checkChatbotHealth = async () => {
       try {
         const isHealthy = await chatbotService.checkHealth();
-        if (!isHealthy) {
-          console.warn('Chatbot pode estar indisponível');
-        }
+        if (!isHealthy) console.warn('Chatbot pode estar indisponível');
       } catch (error) {
         console.error('Erro ao verificar saúde do chatbot:', error);
       }
     };
-
-    if (user) {
-      checkChatbotHealth();
-    }
+    if (user) checkChatbotHealth();
   }, [user]);
 
   const sendMessage = async () => {
@@ -135,33 +128,22 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
 
       setConversationHistory((prev) => [
         ...prev,
-        {
-          role: 'user',
-          parts: [{ text: userMessage.text }],
-        },
-        {
-          role: 'model',
-          parts: [{ text: response.message }],
-        },
+        { role: 'user', parts: [{ text: userMessage.text }] },
+        { role: 'model', parts: [{ text: response.message }] },
       ]);
-
-      // console.log('Mensagem enviada e histórico atualizado');
     } catch (error: any) {
-      // console.error('Erro ao enviar mensagem:', error);
-
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: 'Desculpe, ocorreu um erro ao processar sua mensagem. Tente novamente.',
         isUser: false,
         timestamp: new Date(),
       };
-
       setMessages((prev) => [...prev, errorMessage]);
 
       Alert.alert(
         'Erro',
         error.message ||
-          'Não foi possível conectar com o assistente. Verifique se o back-end está rodando na porta 3000.',
+          'Não foi possível conectar com o assistente. Verifique se o back-end está rodando.',
         [{ text: 'OK' }]
       );
     } finally {
@@ -174,10 +156,7 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
       'Resetar Conversa',
       'Deseja iniciar uma nova conversa? O histórico atual será perdido.',
       [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-        },
+        { text: 'Cancelar', style: 'cancel' },
         {
           text: 'Resetar',
           style: 'destructive',
@@ -193,10 +172,7 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
                   timestamp: new Date(),
                 },
               ]);
-              // console.log('Conversa resetada');
-            } catch (error) {
-              // console.error('Erro ao resetar conversa:', error);
-            }
+            } catch (error) {}
           },
         },
       ]
@@ -205,18 +181,12 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
     if (scrollViewRef.current) {
-      setTimeout(() => {
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-      }, 100);
+      setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100);
     }
   }, [messages]);
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
+  const formatTime = (date: Date) =>
+    date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
   return (
     <KeyboardAvoidingView
@@ -224,9 +194,9 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 60}
     >
-      <Styled.Header style={{ paddingTop: insets.top }}>
+      <Styled.Header insetTop={insets.top}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Styled.BackText>← Voltar</Styled.BackText>
+          <Styled.BackText>Voltar</Styled.BackText>
         </TouchableOpacity>
         <Styled.HeaderTitle>Assistente Thetis</Styled.HeaderTitle>
         <TouchableOpacity onPress={resetConversation}>
@@ -238,27 +208,13 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
         <ScrollView
           ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: 20,
-            flexGrow: 1,
-          }}
+          contentContainerStyle={{ paddingBottom: 20, flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
         >
-          <View
-            style={{
-              alignItems: 'center',
-              paddingVertical: 20,
-              paddingHorizontal: 16,
-            }}
-          >
+          <View style={{ alignItems: 'center', paddingVertical: 20, paddingHorizontal: 16 }}>
             <Image
               source={require('../../images/chatbot/icon.png')}
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: 40,
-                marginBottom: 10,
-              }}
+              style={{ width: 80, height: 80, borderRadius: 40, marginBottom: 10 }}
               resizeMode="contain"
             />
             <Text
@@ -272,14 +228,7 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
             >
               Assistente Thetis
             </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                color: '#666',
-                textAlign: 'center',
-                lineHeight: 20,
-              }}
-            >
+            <Text style={{ fontSize: 14, color: '#666', textAlign: 'center', lineHeight: 20 }}>
               Seu assistente virtual para dúvidas sobre investimentos e a plataforma Thetis
             </Text>
           </View>
@@ -298,15 +247,11 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
               >
                 <Styled.MessageHeader>
                   {message.isUser ? (
-                    <UserIcon size={16} color="#fff" />
+                    <Feather name="user" size={16} color="#fff" />
                   ) : (
                     <Image
                       source={require('../../images/chatbot/icon.png')}
-                      style={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: 8,
-                      }}
+                      style={{ width: 16, height: 16, borderRadius: 8 }}
                       resizeMode="contain"
                     />
                   )}
@@ -341,11 +286,7 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
         </ScrollView>
       </Styled.MessagesContainer>
 
-      <Styled.InputContainer
-        style={{
-          paddingBottom: Platform.OS === 'ios' ? insets.bottom : 16,
-        }}
-      >
+      <Styled.InputContainer style={{ paddingBottom: Platform.OS === 'ios' ? insets.bottom : 16 }}>
         <Styled.InputWrapper>
           <Styled.TextInput
             value={inputText}
@@ -359,7 +300,8 @@ const ChatBot: React.FC<Props> = ({ navigation }) => {
           />
           <TouchableOpacity onPress={sendMessage} disabled={!inputText.trim() || isLoading}>
             <Styled.SendButton disabled={!inputText.trim() || isLoading}>
-              <PaperAirplaneIcon
+              <Feather
+                name="send"
                 size={20}
                 color={!inputText.trim() || isLoading ? '#ccc' : '#1E88E5'}
               />

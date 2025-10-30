@@ -3,7 +3,7 @@ import { ScrollView, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { HomeStyled as Styled } from './styled';
-import { MagnifyingGlassIcon, BellIcon, ChatBubbleLeftIcon } from 'react-native-heroicons/outline';
+import { Feather } from '@expo/vector-icons';
 import StockList from '../../components/StockList/StockList';
 import TabBar from '../../components/TabBar/TabBar';
 import { Text } from 'react-native';
@@ -88,7 +88,7 @@ const Home: React.FC<Props> = ({ navigation }) => {
       <Styled.Content>
         <Styled.Header>
           <Styled.SearchContainer>
-            <MagnifyingGlassIcon color="#999" size={20} />
+            <Feather name="search" size={20} color="#999" />
             <Styled.SearchPlaceholder>Procurar...</Styled.SearchPlaceholder>
           </Styled.SearchContainer>
 
@@ -97,13 +97,11 @@ const Home: React.FC<Props> = ({ navigation }) => {
               onPress={() => navigation.navigate('ChatBot')}
               style={{ marginRight: 12 }}
             >
-              <Styled.ChatBotButton>
-                <ChatBubbleLeftIcon color="#1E88E5" size={20} />
-              </Styled.ChatBotButton>
+              <Feather name="message-circle" size={20} color="#1E88E5" />
             </TouchableOpacity>
 
             <TouchableOpacity>
-              <BellIcon color="#000" size={24} />
+              <Feather name="bell" size={22} color="#000" />
             </TouchableOpacity>
           </Styled.HeaderActions>
         </Styled.Header>
@@ -141,7 +139,9 @@ const Home: React.FC<Props> = ({ navigation }) => {
             ) : trendingStocks.length > 0 ? (
               <StockList stocks={trendingStocks} showStatus={true} />
             ) : (
-              <Text style={{ fontFamily: 'sans-serif' }}>Nenhuma tendência disponível no momento</Text>
+              <Text style={{ fontFamily: 'sans-serif' }}>
+                Nenhuma tendência disponível no momento
+              </Text>
             )}
           </Styled.StockListContainer>
         </ScrollView>

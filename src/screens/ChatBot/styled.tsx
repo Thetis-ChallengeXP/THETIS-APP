@@ -13,11 +13,12 @@ const Container = styled.ScrollView`
   background-color: #f8f9fa;
 `;
 
-const Header = styled.View`
+const Header = styled.View<{ insetTop?: number }>`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  padding-top: ${(props) => (props.insetTop ? `${props.insetTop + 8}px` : '16px')};
+  padding: 12px 12px;
   background-color: #fff;
   border-bottom-width: 1px;
   border-bottom-color: #e0e0e0;

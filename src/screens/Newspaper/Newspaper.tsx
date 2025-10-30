@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ScrollView, TouchableOpacity, Text, Image, View } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { NewspaperStyled as Styled } from './styled';
-import { MagnifyingGlassIcon, BellIcon } from 'react-native-heroicons/outline';
+import { Feather } from '@expo/vector-icons';
 import NewsCard from '../../components/NewsCard/NewsCard';
 import NewsList from '../../components/NewList/NewList';
 import { featuredNews, newsList } from '../../utils/newsData';
@@ -41,11 +41,11 @@ const Newspaper: React.FC<Props> = ({ navigation }) => {
       <Styled.Content>
         <Styled.Header>
           <Styled.SearchContainer>
-            <MagnifyingGlassIcon color="#999" size={20} />
+            <Feather name="search" size={20} color="#999" />
             <Styled.SearchPlaceholder>Procurar...</Styled.SearchPlaceholder>
           </Styled.SearchContainer>
           <TouchableOpacity>
-            <BellIcon color="#000" size={24} />
+            <Feather name="bell" size={22} color="#000" />
           </TouchableOpacity>
         </Styled.Header>
 

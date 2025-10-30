@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { StyledNewsList as Styled } from './styled';
-import { ChevronRightIcon } from 'react-native-heroicons/solid';
+import { Feather } from '@expo/vector-icons';
 
 interface NewsItem {
   id: string;
@@ -21,15 +21,10 @@ const NewsList: React.FC<NewsListProps> = ({ news, onNewsPress }) => {
   return (
     <>
       {news.map((item) => (
-        <TouchableOpacity 
-          key={item.id} 
-          onPress={() => onNewsPress && onNewsPress(item.id)}
-        >
+        <TouchableOpacity key={item.id} onPress={() => onNewsPress && onNewsPress(item.id)}>
           <Styled.NewsItem>
             <Styled.NewsContent>
-              <Styled.NewsTitle numberOfLines={2}>
-                {item.title}
-              </Styled.NewsTitle>
+              <Styled.NewsTitle numberOfLines={2}>{item.title}</Styled.NewsTitle>
 
               <Styled.CompanyInfo>
                 <Styled.Company>{item.company}</Styled.Company>
@@ -40,7 +35,7 @@ const NewsList: React.FC<NewsListProps> = ({ news, onNewsPress }) => {
             </Styled.NewsContent>
 
             <Styled.ArrowContainer>
-              <ChevronRightIcon color="#007aff" size={20} />
+              <Feather name="chevron-right" size={20} color="#007AFF" />
             </Styled.ArrowContainer>
           </Styled.NewsItem>
         </TouchableOpacity>
